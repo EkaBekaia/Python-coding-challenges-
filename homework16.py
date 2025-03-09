@@ -2,22 +2,26 @@
 # 1. დაწერეთ ტრანზაქციის ფუნქცია, რომელსაც გადაეცემა ატრიბუტად ბალანსი და გადასახდელი თანხა, დაუწერეთ დეკორატორი, 
 # რომელიც საკომისიოს ჩამოაჭრის 1 ლარს და თუ საკმარისი თანხა არ იქნება ანგარიშზე დაუბრუნეთ შეცდომის ტექსტი
 
+def transaction_decorator(func):
+    def wrapper(balance, amount_to_pay):
+        commission = 1
+        balance -= commission
+        if balance < amount_to_pay:
+            return "Error: Your balance is not sufficient to make payment"
+        return func(balance, amount_to_pay)
+    return wrapper
+
+@transaction_decorator
 def transaction(balance, amount_to_pay):
-    commission = 1  
-    balance -= commission
-    
-    if balance < amount_to_pay:
-       return "Error: Your balance is not sufficient to make payment"
-    
     balance -= amount_to_pay
-    return f"Transaction successful"
+    return f"Transaction successful, remaining balance: {balance}"
 
 balance = 100
 amount_to_pay = 50
-print(transaction(balance, amount_to_pay)) 
+print(transaction(balance, amount_to_pay))
 
 amount_to_pay = 199
-print(transaction(balance, amount_to_pay))  
+print(transaction(balance, amount_to_pay))
 
 #  2. შექმენით მეტაკლასი, რომელიც სხვა კლასზე გამოყენების შემთხვევაში შეამოწმებს ამ კლასის მეთოდის სახელებს,
 #    შემდეგი სახით: თუ მეთოდი იწყება _ ეს მეთოდი ვალიდური იქნება, თუ არ იწყება _, მაშინ აღზევდეს 
