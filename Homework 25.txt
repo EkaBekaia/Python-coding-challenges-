@@ -1,0 +1,52 @@
+შექმენით ბაზა
+
+შექმენით ცხრილი cars შემდეგი სვეტებით:
+ავტომანქანის აიდი - ავტომატურად ზრდადი პირველადი გასაღები
+ბრენდი - არ უნდა იყოს განუსაზღვრელი
+მოდელი - არ უნდა იყოს განუსაზღვრელი
+გამოშვების წელი - არ უნდა იყოს განუსაზღვრელი
+ვინ კოდი - უნიკალური 17 სიმბოლოიანი(მაქსიმალური)
+დამატების თარიღი - ავტომატურად ივსებოდეს შექმნის თარიღით
+ძრავის მოცულობა - უნდა იყოს 0.5 ზე მეტი
+გარბენი(კმ)
+არის თუ არა განბაჟებული - უნდა იყოს ბულეან ტიპის
+ფასი - დეციმალ ტიპის უნდა იყოს და მაქსიმალური ციფრების რაოდენობა 10, მძიმის შემდეგ 2 ციფრი
+აღწერა - არ უნდა იყოს შეზღუდული რაოდენობის სიმბოლოები
+გაყიდულია - უნდა იყოს ბულეან ტიპის
+
+სვეტები უნდა იყოს ლოგიკური მონაცემთა ტიპებით განსაზღვრული!
+სურვილისამებრ შეგიძლიათ დაუმატოთ ნებისმიერი დამატებითი მახასიათებლები
+
+მონაცემთა შეტანა:
+შეიტანეთ მინიმუმ 10 მონაცემი
+
+დაწერეთ ეს ყველაფერი pgAdmin-ში და შეინახეთ ტექსტურ ფაილში და ის ატვირთეთ დავალების ველში
+
+
+
+CREATE TABLE cars (
+    id SERIAL PRIMARY KEY,
+    brand VARCHAR(20) NOT NULL,
+    model VARCHAR(20) NOT NULL,
+    year_of_production INT NOT NULL,
+    vin_code CHAR(17) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    engine_capacity DECIMAL(3,1) CHECK (engine_capacity > 0.5) NOT NULL,
+    mileage_km INT CHECK (mileage_km >= 0),
+    is_customs_cleared BOOLEAN NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    description TEXT,
+    is_sold BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+INSERT INTO cars (brand, model, year_of_production, vin_code, engine_capacity, mileage_km, is_customs_cleared, price, description, is_sold) VALUES
+('Toyota', 'Camry', 2022, 'JH4DB1540LS000001', 2.5, 50000, TRUE, 25000.00, 'Comfortable but long sedan.', FALSE),
+('BMW', 'X5', 2025, 'WBANB33596B000002', 3.0, 70000, FALSE, 40000.00, 'Luxury SUV', FALSE),
+('Mercedes-Benz', 'C-Class', 2021, 'WDDGF81X69F000003', 2.0, 30000, TRUE, 35000.00, 'Sporty and elegant.', TRUE),
+('Ford', 'Focus', 2018, '1FAHP3F28CL000004', 1.6, 90000, TRUE, 15000.00, 'Economical compact car.', FALSE),
+('Honda', 'Civic', 2022, '2HGFB2F50CH000005', 1.8, 10000, TRUE, 28000.00, 'Popular model with low fuel consumption.', FALSE),
+('Audi', 'A6', 2020, 'WAUZZZ4F69N000006', 3.0, 45000, FALSE, 45000.00, 'Premium sedan.', FALSE),
+('Nissan', 'X-Trail', 2017, 'JN1TANT31Z0000007', 2.5, 120000, TRUE, 18000.00, 'Spacious and reliable SUV.', TRUE),
+('Chevrolet', 'Malibu', 2019, '1G1ZD5STXKF000008', 2.0, 60000, FALSE, 22000.00, 'Comfortable mid-size sedan.', FALSE),
+('Lexus', 'RX 350', 2021, '2T2BZMCA9KC000009', 3.5, 20000, TRUE, 50000.00, 'Luxury crossover.', FALSE),
+('Volkswagen', 'Golf', 2018, 'WVWZZZAUZJW000010', 1.4, 80000, TRUE, 16000.00, 'Compact family acr.', TRUE);
